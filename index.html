@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FunkyWave</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .container {
+        padding: 20px;
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      h1 {
+        margin-top: 0;
+        color: #0ff;
+        text-shadow: 0 0 10px #0ff;
+      }
+
+      .player {
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+        backdrop-filter: blur(10px);
+      }
+
+      .track-info {
+        margin-bottom: 15px;
+      }
+
+      .track-name {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin: 5px 0;
+      }
+
+      .artist {
+        color: #ccc;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+      }
+
+      button {
+        background: none;
+        border: 2px solid #0ff;
+        color: #0ff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        font-size: 1.5em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 5px #0ff;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background: rgba(0, 255, 255, 0.2);
+      }
+
+      button:active {
+        transform: scale(0.95);
+      }
+
+      .playlist {
+        flex-grow: 1;
+        overflow-y: auto;
+        margin-top: 20px;
+        text-align: left;
+      }
+
+      .playlist-item {
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        transition: background 0.3s;
+        border-radius: 5px;
+      }
+
+      .playlist-item:hover {
+        background: rgba(0, 255, 255, 0.1);
+      }
+
+      .playlist-item.active {
+        background: rgba(0, 255, 255, 0.2);
+        color: #0ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎵 FunkyWave</h1>
+
+      <div class="player">
+        <div class="track-info">
+          <div class="track-name" id="currentTrack">Выберите трек</div>
+          <div class="artist" id="currentArtist">из плейлиста</div>
+        </div>
+        <div class="controls">
+          <button id="prevBtn">⏮</button>
+          <button id="playBtn">▶</button>
+          <button id="pauseBtn" style="display: none">⏸</button>
+          <button id="nextBtn">⏭</button>
+        </div>
+      </div>
+
+      <div class="playlist" id="playlist">
+        <!-- Плейлист будет загружен здесь -->
+      </div>
+    </div>
+
+    <script>
+      // Инициализация Telegram Web App
+      let tg = window.Telegram.WebApp;
+      tg.expand(); // Раскрываем приложение на весь экран
+      tg.enableClosingConfirmation(); // Включаем подтверждение закрытия
+
+      // Элементы DOM
+      const playBtn = document.getElementById("playBtn");
+      const pauseBtn = document.getElementById("pauseBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const currentTrackEl = document.getElementById("currentTrack");
+      const currentArtistEl = document.getElementById("currentArtist");
+      const playlistEl = document.getElementById("playlist");
+
+      // Состояние плеера
+      let playerState = {
+        isPlaying: false,
+        currentTrackIndex: null,
+        audioPlayer: new Audio(),
+        playlist: [], // Массив треков {id: number, title: string, artist: string, file_url: string}
+      };
+
+      // Загрузка плейлиста (в реальности - с вашего сервера)
+      function loadPlaylist() {
+        // ЗАГЛУШКА: В реальности здесь fetch к вашему API
+        const fakePlaylist = [
+          {
+            id: 1,
+            title: "Night Drive",
+            artist: "Vadim Mazaev",
+            file_url: "https://example.com/track1.mp3",
+          },
+          {
+            id: 2,
+            title: "Neon Dreams",
+            artist: "Lux FM",
+            file_url: "https://example.com/track2.mp3",
+          },
+          {
+            id: 3,
+            title: "Skyline",
+            artist: "DJ Funk",
+            file_url: "https://example.com/track3.mp3",
+          },
+        ];
+
+        playerState.playlist = fakePlaylist;
+        renderPlaylist();
+      }
+
+      // Отображение плейлиста
+      function renderPlaylist() {
+        playlistEl.innerHTML = "";
+        playerState.playlist.forEach((track, index) => {
+          const item = document.createElement("div");
+          item.className = "playlist-item";
+          if (index === playerState.currentTrackIndex) {
+            item.classList.add("active");
+          }
+          item.innerHTML = `<b>${track.title}</b> - ${track.artist}`;
+          item.addEventListener("click", () => {
+            playTrack(index);
+          });
+          playlistEl.appendChild(item);
+        });
+      }
+
+      // Воспроизведение трека
+      function playTrack(index) {
+        if (index < 0 || index >= playerState.playlist.length) return;
+
+        const track = playerState.playlist[index];
+        playerState.currentTrackIndex = index;
+
+        currentTrackEl.textContent = track.title;
+        currentArtistEl.textContent = track.artist;
+
+        playerState.audioPlayer.src = track.file_url;
+        playerState.audioPlayer.play();
+        playerState.isPlaying = true;
+
+        playBtn.style.display = "none";
+        pauseBtn.style.display = "flex";
+
+        renderPlaylist(); // Обновляем выделение активного трека
+      }
+
+      // Пауза
+      function pauseTrack() {
+        playerState.audioPlayer.pause();
+        playerState.isPlaying = false;
+        pauseBtn.style.display = "none";
+        playBtn.style.display = "flex";
+      }
+
+      // Следующий трек
+      function nextTrack() {
+        let nextIndex = playerState.currentTrackIndex + 1;
+        if (nextIndex >= playerState.playlist.length) nextIndex = 0; // Зацикливание
+        playTrack(nextIndex);
+      }
+
+      // Предыдущий трек
+      function prevTrack() {
+        let prevIndex = playerState.currentTrackIndex - 1;
+        if (prevIndex < 0) prevIndex = playerState.playlist.length - 1; // Зацикливание
+        playTrack(prevIndex);
+      }
+
+      // Обработчики событий
+      playBtn.addEventListener("click", () => {
+        if (playerState.currentTrackIndex === null) {
+          // Если трек еще не выбран, начинаем с первого
+          playTrack(0);
+        } else {
+          // Если трек уже был выбран, продолжаем воспроизведение
+          playerState.audioPlayer.play();
+          playerState.isPlaying = true;
+          playBtn.style.display = "none";
+          pauseBtn.style.display = "flex";
+        }
+      });
+
+      pauseBtn.addEventListener("click", pauseTrack);
+      nextBtn.addEventListener("click", nextTrack);
+      prevBtn.addEventListener("click", prevTrack);
+
+      // Автопереход к следующему треку по окончании текущего
+      playerState.audioPlayer.addEventListener("ended", nextTrack);
+
+      // Инициализация приложения
+      loadPlaylist();
+    </script>
+  </body>
+</html>
