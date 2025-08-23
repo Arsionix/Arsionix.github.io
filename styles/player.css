@@ -1,0 +1,209 @@
+/* Стили для страницы плеера */
+.player-container {
+  max-width: 800px;
+  margin: 100px auto 50px;
+  padding: 20px;
+}
+
+.now-playing {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.track-cover {
+  width: 250px;
+  height: 250px;
+  margin: 0 auto 1.5rem;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.track-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.track-info h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.track-info p {
+  color: #d1d5db;
+  font-size: 1.2rem;
+}
+
+/* Элементы управления */
+.player-controls {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+.progress-container {
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 3px;
+  transition: width 0.1s ease;
+}
+
+.time-info {
+  display: flex;
+  justify-content: space-between;
+  color: #d1d5db;
+  font-size: 0.9rem;
+}
+
+.control-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.control-btn {
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.play-btn {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+.play-btn:hover {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.volume-control input {
+  width: 100px;
+}
+
+/* Плейлист */
+.playlist-section h3 {
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.playlist {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.playlist-item {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.playlist-item:last-child {
+  border-bottom: none;
+}
+
+.playlist-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.playlist-item.active {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+.playlist-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.playlist-info {
+  flex: 1;
+}
+
+.playlist-info h4 {
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.playlist-info p {
+  color: #d1d5db;
+  font-size: 0.9rem;
+}
+
+/* Адаптивность для плеера */
+@media (max-width: 768px) {
+  .player-container {
+    margin: 80px auto 30px;
+    padding: 15px;
+  }
+
+  .track-cover {
+    width: 200px;
+    height: 200px;
+  }
+
+  .track-info h2 {
+    font-size: 1.5rem;
+  }
+
+  .control-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .play-btn {
+    width: 60px;
+    height: 60px;
+  }
+}

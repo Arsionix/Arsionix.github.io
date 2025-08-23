@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avplord Player - Слушайте фонк</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles/player.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-crown"></i>
+          <span>AVPLORD PLAYER</span>
+        </div>
+        <div class="nav-menu">
+          <a href="index.html" class="nav-link">Главная</a>
+          <a href="index.html#join" class="nav-link">Для артистов</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="player-container">
+      <div class="now-playing">
+        <div class="track-cover">
+          <img
+            src="assets/placeholder-cover.jpg"
+            alt="Обложка трека"
+            id="cover-image"
+          />
+        </div>
+        <div class="track-info">
+          <h2 id="track-title">Выберите трек</h2>
+          <p id="track-artist">из плейлиста</p>
+        </div>
+      </div>
+
+      <div class="player-controls">
+        <div class="progress-container">
+          <div class="progress-bar" id="progress-bar"></div>
+          <div class="time-info">
+            <span id="current-time">0:00</span>
+            <span id="total-time">0:00</span>
+          </div>
+        </div>
+
+        <div class="control-buttons">
+          <button class="control-btn" onclick="previousTrack()">
+            <i class="fas fa-step-backward"></i>
+          </button>
+          <button class="control-btn play-btn" onclick="togglePlay()">
+            <i class="fas fa-play" id="play-icon"></i>
+          </button>
+          <button class="control-btn" onclick="nextTrack()">
+            <i class="fas fa-step-forward"></i>
+          </button>
+        </div>
+
+        <div class="volume-control">
+          <i class="fas fa-volume-up"></i>
+          <input
+            type="range"
+            id="volume"
+            min="0"
+            max="1"
+            step="0.1"
+            value="0.7"
+          />
+        </div>
+      </div>
+
+      <div class="playlist-section">
+        <h3>Плейлист</h3>
+        <div class="playlist" id="playlist">
+          <!-- Треки будут добавляться через JavaScript -->
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="scripts/player.js"></script>
+  </body>
+</html>
