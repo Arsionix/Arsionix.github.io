@@ -3,292 +3,200 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Avplord</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-      :root {
-        --neon-color: #0ff;
-        --dark-bg: #0f0c29;
-        --darker-bg: #050221;
-      }
-
-      body {
-        font-family: "Arial", sans-serif;
-        background: linear-gradient(135deg, var(--dark-bg), #302b63, #24243e);
-        color: #fff;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        overflow: hidden;
-      }
-
-      .container {
-        padding: 20px;
-        text-align: center;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-      }
-
-      h1 {
-        margin-top: 10px;
-        color: var(--neon-color);
-        text-shadow: 0 0 10px var(--neon-color);
-        font-size: 2rem;
-      }
-
-      .player {
-        background: rgba(0, 0, 0, 0.4);
-        border-radius: 20px;
-        padding: 20px;
-        margin: 15px 0;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-      }
-
-      .track-info {
-        margin-bottom: 20px;
-      }
-
-      .track-name {
-        font-size: 1.4em;
-        font-weight: bold;
-        margin: 5px 0;
-        color: #fff;
-        text-shadow: 0 0 5px var(--neon-color);
-      }
-
-      .artist {
-        color: #aaa;
-        font-size: 0.9em;
-      }
-
-      .controls {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-      }
-
-      button {
-        background: rgba(0, 0, 0, 0.3);
-        border: 2px solid var(--neon-color);
-        color: var(--neon-color);
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        cursor: pointer;
-        font-size: 1.5em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 0 10px var(--neon-color);
-        transition: all 0.2s ease;
-      }
-
-      #playBtn,
-      #pauseBtn {
-        width: 70px;
-        height: 70px;
-        font-size: 1.8em;
-      }
-
-      button:hover {
-        background: rgba(0, 255, 255, 0.15);
-        transform: scale(1.05);
-      }
-
-      button:active {
-        transform: scale(0.95);
-      }
-
-      .playlist {
-        flex-grow: 1;
-        overflow-y: auto;
-        margin-top: 20px;
-        text-align: left;
-        border-radius: 15px;
-        background: rgba(0, 0, 0, 0.2);
-        padding: 10px;
-      }
-
-      .playlist-item {
-        padding: 12px 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        cursor: pointer;
-        transition: all 0.3s;
-        border-radius: 10px;
-        margin: 5px 0;
-      }
-
-      .playlist-item:hover {
-        background: rgba(0, 255, 255, 0.1);
-      }
-
-      .playlist-item.active {
-        background: rgba(0, 255, 255, 0.2);
-        color: var(--neon-color);
-        border-left: 3px solid var(--neon-color);
-      }
-    </style>
+    <title>Avplord - Платформа для фонк и электронной музыки</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body>
-    <div class="container">
-      <h1>🎵 Avplord</h1>
-
-      <div class="player">
-        <div class="track-info">
-          <div class="track-name" id="currentTrack">Выберите трек</div>
-          <div class="artist" id="currentArtist">из плейлиста</div>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-crown"></i>
+          <span>AVPLORD</span>
         </div>
-        <div class="controls">
-          <button id="prevBtn">⏮</button>
-          <button id="playBtn">▶</button>
-          <button id="pauseBtn" style="display: none">⏸</button>
-          <button id="nextBtn">⏭</button>
+        <div class="nav-menu">
+          <a href="#about" class="nav-link">О нас</a>
+          <a href="#for-artists" class="nav-link">Артистам</a>
+          <a href="#for-listeners" class="nav-link">Слушателям</a>
+          <a href="#join" class="nav-link">Присоединиться</a>
         </div>
       </div>
+    </nav>
 
-      <div class="playlist" id="playlist">
-        <!-- Плейлист будет загружен здесь -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Твоя музыка — <span class="gradient-text">наше царство</span>
+        </h1>
+        <p class="hero-subtitle">
+          Первая платформа, где фонк и электронная музыка находят своих королей
+          и королев
+        </p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary" onclick="scrollToSection('join')">
+            <i class="fas fa-microphone"></i>
+            Для артистов
+          </button>
+          <button class="btn btn-secondary" onclick="openPlayer()">
+            <i class="fas fa-headphones"></i>
+            Слушать сейчас
+          </button>
+        </div>
       </div>
-    </div>
+      <div class="hero-visual">
+        <div class="music-visualizer">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </div>
+    </section>
 
-    <script>
-      // Инициализация Telegram Web App
-      let tg = window.Telegram.WebApp;
-      tg.expand(); // Раскрываем приложение на весь экран
-      tg.enableClosingConfirmation(); // Включаем подтверждение закрытия
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="section-title">
+          Почему <span class="gradient-text">Avplord?</span>
+        </h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <h3>Монетизация</h3>
+            <p>
+              Зарабатывайте на своей музыке через рекламную модель. Получайте
+              доход с каждого прослушивания.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Сообщество</h3>
+            <p>
+              Присоединяйтесь к растущему сообществу ценителей фонк и
+              электронной музыки.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Статистика</h3>
+            <p>
+              Подробная аналитика прослушиваний и доходов. Знайте свою
+              аудиторию.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      // Элементы DOM
-      const playBtn = document.getElementById("playBtn");
-      const pauseBtn = document.getElementById("pauseBtn");
-      const prevBtn = document.getElementById("prevBtn");
-      const nextBtn = document.getElementById("nextBtn");
-      const currentTrackEl = document.getElementById("currentTrack");
-      const currentArtistEl = document.getElementById("currentArtist");
-      const playlistEl = document.getElementById("playlist");
+    <section id="for-artists" class="section bg-dark">
+      <div class="container">
+        <h2 class="section-title">
+          Для <span class="gradient-text">артистов</span>
+        </h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Зарегистрируйтесь</h3>
+              <p>Создайте аккаунт исполнителя за 2 минуты</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Загрузите музыку</h3>
+              <p>Добавьте свои треки в высоком качестве</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Зарабатывайте</h3>
+              <p>Получайте доход с каждого прослушивания</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      // Состояние плеера
-      let playerState = {
-        isPlaying: false,
-        currentTrackIndex: null,
-        audioPlayer: new Audio(),
-        playlist: [], // Массив треков {id: number, title: string, artist: string, file_url: string}
-      };
+    <section id="join" class="section">
+      <div class="container">
+        <h2 class="section-title">
+          Присоединяйтесь <span class="gradient-text">сегодня</span>
+        </h2>
+        <div class="join-container">
+          <div class="join-form">
+            <h3>Начните прямо сейчас</h3>
+            <form id="artist-form">
+              <div class="form-group">
+                <input type="text" placeholder="Ваше имя" required />
+              </div>
+              <div class="form-group">
+                <input type="email" placeholder="Email" required />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  placeholder="Ссылка на вашу музыку (VK, SoundCloud)"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Отправить заявку
+              </button>
+            </form>
+          </div>
+          <div class="join-info">
+            <h3>Что вы получаете?</h3>
+            <ul>
+              <li><i class="fas fa-check"></i> Доступ к растущей аудитории</li>
+              <li>
+                <i class="fas fa-check"></i> Прозрачную систему monetization
+              </li>
+              <li><i class="fas fa-check"></i> Поддержку сообщества</li>
+              <li><i class="fas fa-check"></i> Продвижение вашей музыки</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      // Загрузка плейлиста (в реальности - с вашего сервера)
-      function loadPlaylist() {
-        // ЗАГЛУШКА: В реальности здесь fetch к вашему API
-        const fakePlaylist = [
-          {
-            id: 1,
-            title: "SLAY!",
-            artist: "Eternxlkz",
-            file_url: "music/Eternxlkz-SLAY!.mp3",
-          },
-          {
-            id: 2,
-            title: "BRODYAGA FUNK",
-            artist: "Eternxlkz",
-            file_url: "music/Eternxlkz-BRODYAGA_FUNK.mp3",
-          },
-          {
-            id: 3,
-            title: "SENTE MAIS",
-            artist: "Eternxlkz",
-            file_url: "music/Eternxlkz-SENTE_MAIS.mp3",
-          },
-        ];
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>AVPLORD</h3>
+            <p>Царство фонк и электронной музыки</p>
+          </div>
+          <div class="footer-section">
+            <h4>Контакты</h4>
+            <p>contact@avplord.ru</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-vk"></i></a>
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 Avplord. Сделано с ❤️ для музыки</p>
+        </div>
+      </div>
+    </footer>
 
-        playerState.playlist = fakePlaylist;
-        renderPlaylist();
-      }
-
-      // Отображение плейлиста
-      function renderPlaylist() {
-        playlistEl.innerHTML = "";
-        playerState.playlist.forEach((track, index) => {
-          const item = document.createElement("div");
-          item.className = "playlist-item";
-          if (index === playerState.currentTrackIndex) {
-            item.classList.add("active");
-          }
-          item.innerHTML = `<b>${track.title}</b> - ${track.artist}`;
-          item.addEventListener("click", () => {
-            playTrack(index);
-          });
-          playlistEl.appendChild(item);
-        });
-      }
-
-      // Воспроизведение трека
-      function playTrack(index) {
-        if (index < 0 || index >= playerState.playlist.length) return;
-
-        const track = playerState.playlist[index];
-        playerState.currentTrackIndex = index;
-
-        currentTrackEl.textContent = track.title;
-        currentArtistEl.textContent = track.artist;
-
-        playerState.audioPlayer.src = track.file_url;
-        playerState.audioPlayer.play();
-        playerState.isPlaying = true;
-
-        playBtn.style.display = "none";
-        pauseBtn.style.display = "flex";
-
-        renderPlaylist(); // Обновляем выделение активного трека
-      }
-
-      // Пауза
-      function pauseTrack() {
-        playerState.audioPlayer.pause();
-        playerState.isPlaying = false;
-        pauseBtn.style.display = "none";
-        playBtn.style.display = "flex";
-      }
-
-      // Следующий трек
-      function nextTrack() {
-        let nextIndex = playerState.currentTrackIndex + 1;
-        if (nextIndex >= playerState.playlist.length) nextIndex = 0; // Зацикливание
-        playTrack(nextIndex);
-      }
-
-      // Предыдущий трек
-      function prevTrack() {
-        let prevIndex = playerState.currentTrackIndex - 1;
-        if (prevIndex < 0) prevIndex = playerState.playlist.length - 1; // Зацикливание
-        playTrack(prevIndex);
-      }
-
-      // Обработчики событий
-      playBtn.addEventListener("click", () => {
-        if (playerState.currentTrackIndex === null) {
-          // Если трек еще не выбран, начинаем с первого
-          playTrack(0);
-        } else {
-          // Если трек уже был выбран, продолжаем воспроизведение
-          playerState.audioPlayer.play();
-          playerState.isPlaying = true;
-          playBtn.style.display = "none";
-          pauseBtn.style.display = "flex";
-        }
-      });
-
-      pauseBtn.addEventListener("click", pauseTrack);
-      nextBtn.addEventListener("click", nextTrack);
-      prevBtn.addEventListener("click", prevTrack);
-
-      // Автопереход к следующему треку по окончании текущего
-      playerState.audioPlayer.addEventListener("ended", nextTrack);
-
-      // Инициализация приложения
-      loadPlaylist();
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
