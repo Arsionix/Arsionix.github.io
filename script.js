@@ -1,77 +1,82 @@
-document.querySelectorAll(".nav-link").forEach((link) => {
-  link.addEventListener("click", function (e) {
-    const href = this.getAttribute("href");
+// Плавная прокрутка для якорных ссылок
+document.addEventListener("DOMContentLoaded", function () {
+  // Обрабатываем только якорные ссылки
+  const anchorLinks = document.querySelectorAll(".anchor-link");
 
-    // Если это якорная ссылка (начинается с #)
-    if (href.startsWith("#")) {
+  anchorLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      // Отменяем стандартное поведение ТОЛЬКО для якорных ссылок
       e.preventDefault();
-      const targetId = href.substring(1);
-      scrollToSection(targetId);
-    }
-    // Если это ссылка на другой HTML-файл
-    else if (href.endsWith(".html")) {
-      // Переход произойдет автоматически
-      // Можно добавить прелоадер или анимацию перехода
-    }
+
+      const href = this.getAttribute("href");
+      if (href.startsWith("#")) {
+        const targetId = href.substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          // Плавная прокрутка к элементу
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+
+          // Обновляем URL в адресной строке
+          history.pushState(null, "", href);
+        }
+      }
+    });
   });
+
+  console.log(
+    "Навигация инициализирована: якорные ссылки работают с плавной прокруткой"
+  );
 });
 
-// Плавная прокрутка к секциям
-function scrollToSection(sectionId) {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    element.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
+// Функция для кнопки "Слушать сейчас" на главной
+function openPlayer() {
+  window.location.href = "player.html";
+}
+
+// Обработка формы (если нужно)
+document.addEventListener("DOMContentLoaded", function () {
+  const artistForm = document.getElementById("artist-form");
+  if (artistForm) {
+    artistForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const formData = {
+        name: this.querySelector('input[type="text"]').value,
+        email: this.querySelector('input[type="email"]').value,
+        musicLink: this.querySelector('input[placeholder*="ссылку"]').value,
+      };
+
+      console.log("Форма отправлена:", formData);
+      alert(
+        "Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время."
+      );
+      this.reset();
+    });
+  }
+});
+
+// Анимация визуализатора музыки на главной
+function animateVisualizer() {
+  const bars = document.querySelectorAll(".bar");
+  if (bars.length > 0) {
+    bars.forEach((bar) => {
+      const randomHeight = 20 + Math.random() * 80;
+      bar.style.height = `${randomHeight}px`;
     });
   }
 }
 
-// Обработка формы
-document.getElementById("artist-form").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const formData = {
-    name: this.querySelector('input[type="text"]').value,
-    email: this.querySelector('input[type="email"]').value,
-    musicLink: this.querySelector('input[placeholder*="ссылку"]').value,
-  };
-
-  // Здесь будет отправка данных на сервер
-  console.log("Форма отправлена:", formData);
-
-  // Показываем уведомление
-  alert(
-    "Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время."
-  );
-  this.reset();
-});
-
-// Анимация визуализатора музыки
-function animateVisualizer() {
-  const bars = document.querySelectorAll(".bar");
-  bars.forEach((bar) => {
-    const randomHeight = 20 + Math.random() * 80;
-    bar.style.height = `${randomHeight}px`;
-  });
-}
-
-// Запускаем анимацию визуализатора
-setInterval(animateVisualizer, 150);
-
-// Параллакс эффект для герой секции
-window.addEventListener("scroll", function () {
-  const scrolled = window.pageYOffset;
-  const hero = document.querySelector(".hero");
-  if (hero) {
-    hero.style.backgroundPositionY = -(scrolled * 0.5) + "px";
+// Запускаем анимацию только если есть визуализатор
+document.addEventListener("DOMContentLoaded", function () {
+  const visualizer = document.querySelector(".music-visualizer");
+  if (visualizer) {
+    setInterval(animateVisualizer, 150);
   }
 });
-
-// Функция для открытия плеера (заглушка)
-function openPlayer() {
-  window.location.href = "player.html";
-}
 
 // Анимация появления элементов при скролле
 const observerOptions = {
@@ -99,14 +104,5 @@ document.addEventListener("DOMContentLoaded", function () {
     el.style.transform = "translateY(20px)";
     el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
     observer.observe(el);
-  });
-});
-
-// Обработка навигации
-document.querySelectorAll(".nav-link").forEach((link) => {
-  link.addEventListener("click", function (e) {
-    e.preventDefault();
-    const targetId = this.getAttribute("href").substring(1);
-    scrollToSection(targetId);
   });
 });
