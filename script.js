@@ -1,3 +1,21 @@
+document.querySelectorAll(".nav-link").forEach((link) => {
+  link.addEventListener("click", function (e) {
+    const href = this.getAttribute("href");
+
+    // Если это якорная ссылка (начинается с #)
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetId = href.substring(1);
+      scrollToSection(targetId);
+    }
+    // Если это ссылка на другой HTML-файл
+    else if (href.endsWith(".html")) {
+      // Переход произойдет автоматически
+      // Можно добавить прелоадер или анимацию перехода
+    }
+  });
+});
+
 // Плавная прокрутка к секциям
 function scrollToSection(sectionId) {
   const element = document.getElementById(sectionId);
@@ -52,8 +70,7 @@ window.addEventListener("scroll", function () {
 
 // Функция для открытия плеера (заглушка)
 function openPlayer() {
-  alert("Музыкальный плеер откроется здесь! В разработке...");
-  // window.location.href = 'player.html';
+  window.location.href = "player.html";
 }
 
 // Анимация появления элементов при скролле
